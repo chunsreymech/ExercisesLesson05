@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MVC View: Category List</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        table { width: 50%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        th { background-color: #f4f4f4; }
+    </style>
+</head>
+<body>
+
+    <h2>បញ្ជីប្រភេទផលិតផល (Categories)</h2>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Category Name</th>
+            </tr>
+        </thead>
+        
+        <!-- តំបន់សម្រាប់បញ្ចេញទិន្នន័យតាមរយៈ JavaScript -->
+        <tbody id="data-table">
+            <!-- ទិន្នន័យនឹងមកដល់ទីនេះដោយស្វ័យប្រវត្ត -->
+        </tbody>
+    </table>
+
+<!-- ផ្នែក JS នឹងត្រូវសរសេរនៅទីនេះ -->
+</body>
+
+<script>
+    // ទីតាំង URL របស់ Backend API (ត្រូវប្រាកដថា Port ត្រូវគ្នានឹងការ Run ពិតជាក់ស្តែង)
+    const apiUrl = 'http://localhost:5000/api/categoryapi';
+
+    // អនុវត្តមុខងារ Fetch ពេលឯកសារ HTML លោតចេញមកភ្លាម
+    fetch(apiUrl)
+        .then(response => response.json()) // បំប្លែងអត្ថបទទៅជា JSON Object
+        .then(data => {
+            const tableBody = document.getElementById('data-table');
+            
+            // Loop តាមចំនួនទិន្នន័យ Categories ដែលទទួលបានពី Database
+            data.forEach(category => {
+                const row = `
+                    <tr>
+                        <td>${category.id}</td>
+                        <td>${category.name}</td>
+                    </tr>
+                `;
+                // បញ្ចូលជួរថ្មីទៅក្នុងតារាង
+                tableBody.innerHTML += row; 
+            });
+        })
+        .catch(error => console.error('មានបញ្ហាក្នុងការទាញទិន្នន័យ៖', error));
+</script>
+</html>
